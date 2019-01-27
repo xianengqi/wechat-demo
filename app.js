@@ -136,7 +136,7 @@ App({
   goStartIndexPage: function() {
     setTimeout(function() {
       wx.redirectTo({
-        url: "/pages/start/start"
+        url: "/pages/start/index"
       })
     }, 1000)
   },

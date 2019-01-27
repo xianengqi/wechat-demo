@@ -1,7 +1,6 @@
-const CONFIG = require('../config.js');
-const REQUEST_CACHE = [];
-const API_BASE_URL = 'https://api.it120.cc';
-
+const CONFIG = require('../config.js')
+const REQUEST_CACHE = []
+const API_BASE_URL = 'https://api.it120.cc'
 /**
  * 简单请求封装
  * url: 请求地址
@@ -11,7 +10,7 @@ const API_BASE_URL = 'https://api.it120.cc';
  */
 function FetchRequest(url, data, method = 'GET', cache = 0, header = {}, noSubDomain = false) {
   var request_key = GetStorageKey(url, method);
-  console.log('这是封装的请求方法', cache);
+  console.log(111, cache)
   if (cache) {
     return new Promise(Storage);
   } else {
@@ -25,7 +24,7 @@ function FetchRequest(url, data, method = 'GET', cache = 0, header = {}, noSubDo
     wx.getStorage({
       key: request_key,
       success: StorageSuccess,
-      fail: StorageError,
+      fail: StorageError
     })
 
     /**
@@ -55,10 +54,10 @@ function FetchRequest(url, data, method = 'GET', cache = 0, header = {}, noSubDo
     //   return;
     // }
     SaveRequest(request_key);
-    let _url = API_BASE_URL + '/' + CONFIG.subDomain + url;
+    let _url = API_BASE_URL + '/' + CONFIG.subDomain + url
     if (noSubDomain) {
-      _url = API_BASE_URL + url;
-    };
+      _url = API_BASE_URL + url
+    }
     wx.request({
       url: _url,
       method: method.toUpperCase(),
@@ -72,7 +71,7 @@ function FetchRequest(url, data, method = 'GET', cache = 0, header = {}, noSubDo
     /**
      * 成功回调
      */
-    function FetchSucces (res) {
+    function FetchSuccess(res) {
       SaveCache(res);
       if (res.statusCode >= 200 && res.statusCode < 300) {
         resolve(res);
@@ -81,10 +80,10 @@ function FetchRequest(url, data, method = 'GET', cache = 0, header = {}, noSubDo
         switch (res.statusCode) {
           case 403:
             // 业务逻辑处理
-            break;
+            break
         }
       }
-    };
+    }
 
     /**
      * 异常处理
@@ -98,9 +97,9 @@ function FetchRequest(url, data, method = 'GET', cache = 0, header = {}, noSubDo
         })
       }
       reject(err);
-    };
-  };
-  
+    }
+  }
+
   /**
    * 保存缓存信息
    */
@@ -110,21 +109,21 @@ function FetchRequest(url, data, method = 'GET', cache = 0, header = {}, noSubDo
       wx.setStorage({
         key: GetStorageKey(url, method),
         data: res,
-      });
-    };
-  };
+      })
+    }
+  }
 
   /**
    * 验证缓存是否过期
    */
   function CheckCache(data) {
     return data.timestamp < Date.parse(new Date());
-  };
+  }
 
   function RequestOver() {
     RemoveRequest(request_key);
-  };
-};
+  }
+}
 
 /**
  * 并发请求
@@ -133,10 +132,11 @@ function FetchRequest(url, data, method = 'GET', cache = 0, header = {}, noSubDo
 function FetchRequestAll(data) {
   return new Promise(function (resolve, reject) {
     Promise.all(data).then(res => {
-      resolve(res);
-    });
-  });
-};
+      resolve(res)
+    })
+  })
+}
+
 function CheckRequest(key) {
   return REQUEST_CACHE.indexOf(key) >= 0;
 }
@@ -145,19 +145,19 @@ function SaveRequest(key) {
   var index = REQUEST_CACHE.indexOf(key);
   if (index <= 0) {
     REQUEST_CACHE.push(key);
-  };
-};
+  }
+}
 
 function RemoveRequest(key) {
   var index = REQUEST_CACHE.indexOf(key);
   if (index >= 0) {
     REQUEST_CACHE.splice(index, 1);
-  };
-};
+  }
+}
 
 function GetStorageKey(url, method) {
-  return `${method.toUpperCase()}:${url.toUpperCase()}`;
-};
+  return `${method.toUpperCase()}:${url.toUpperCase()}`
+}
 
 /**
  * 小程序的promise没有finally方法，自己扩展下
@@ -186,4 +186,4 @@ module.exports = {
   fetchRequest: FetchRequest,
   cacheTime: 1800,
   fetchRequestAll: FetchRequestAll
-};
+}

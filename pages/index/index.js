@@ -119,8 +119,8 @@ Page({
     })
   },
 
-  getGoodsList: function(categoryID, append) {
-    if (categoryID == 0) {
+  getGoodsList: function(categoryId, append) {
+    if (categoryId == 0) {
       categoryId = "";
     }
     let that = this;

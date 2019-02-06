@@ -56,9 +56,7 @@
     </swiper>
   </view>
   <view class="coupons" hidden="{{ hasNoCoupons }}">
-    <scroll-view class="coupons-scroll"
-      scroll-x="true"
-    >
+    <scroll-view class="coupons-scroll" scroll-x="true">
       <view class="coupons-item" wx:for-items="{{ coupons }}" wx:for-index="idx" wx:key="id" bindtap="gitCoupon" data-id="{{ item.id }}">
         <view style="font-size: 35rpx"> ¥ {{ item.moneyMax }}元</view>
         <view>{{ item.name }}</view>
